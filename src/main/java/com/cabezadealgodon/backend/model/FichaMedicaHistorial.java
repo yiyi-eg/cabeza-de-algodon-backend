@@ -47,8 +47,8 @@ public class FichaMedicaHistorial {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usuario_idusuario", nullable = false)
-    private Usuario medicoResponsable;
+    private Usuario usuario;
 
     @Column(name = "creado_en")
     private LocalDateTime creadoEn;
-}
+};

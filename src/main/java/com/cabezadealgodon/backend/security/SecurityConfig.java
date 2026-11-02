@@ -1,3 +1,4 @@
+
 package com.cabezadealgodon.backend.security;
 
 import org.springframework.context.annotation.Bean;
@@ -17,24 +18,39 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthFilter,
+            AuthenticationProvider authenticationProvider) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
         http
-            .csrf(AbstractHttpConfigurer::disable) // Desactivar CSRF ya que usamos APIs REST con tokens
+            .csrf(AbstractHttpConfigurer::disable)
+
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/ws/**").permitAll() // Rutas públicas (Login, Registro y WebSockets)
-                .anyRequest().authenticated() // Cualquier otra ruta requiere token JWT
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/ws-asilo",
+                    "/ws-asilo/**"
+                ).permitAll()
+                .anyRequest().authenticated()
             )
+
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT no maneja sesiones en servidor
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Nuestro filtro JWT antes del filtro por defecto
+
+            .addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }

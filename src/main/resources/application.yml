@@ -7,8 +7,8 @@ spring:
 
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/cabeza_de_algodon}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: "postgres"
+    password: "edgareg17"
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -18,7 +18,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: mydb
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: "yTsNsbYE5jfSxmVHaH09dj+0fe8a31r+CSakWU0Z30KYx7UbGwngINGBjbNqKhab+WSbcKlYyGCQ5xwEbJ6XQ"
   expiration: ${JWT_EXPIRATION:86400000}
